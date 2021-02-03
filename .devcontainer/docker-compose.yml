@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+
+  workspace:
+
+    build:
+      context: .
+
+    command: tail -f /dev/null
+
+    user: bfreire
+
+    volumes:
+      - ..:/workspace
+      - ~/.ssh:/home/bfreire/.ssh:ro
