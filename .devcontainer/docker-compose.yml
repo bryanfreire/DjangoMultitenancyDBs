@@ -3,14 +3,30 @@ version: '3.7'
 services:
 
   workspace:
-
     build:
       context: .
-
     command: tail -f /dev/null
-
-    user: bfreire
-
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
+      PYTHONPATH: /workspace
+    ports:
+      - 8000:8000
+    user: 1000:1000
     volumes:
       - ..:/workspace
       - ~/.ssh:/home/bfreire/.ssh:ro
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+    user: 1000:1000
+    volumes:
+      - ../config/postgres:/docker-entrypoint-initdb.d
+      - ../.postgres:/var/lib/postgresql/data
+      - /etc/passwd:/etc/passwd:ro
+
+  adminer:
+    image: adminer
+    ports:
+      - 9000:8080
